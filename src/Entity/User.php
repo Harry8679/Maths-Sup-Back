@@ -58,6 +58,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?bool $isPhoneIsVisible = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $emailVerificationToken = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $emailTokenExpiresAt = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -243,6 +249,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIsPhoneIsVisible(bool $isPhoneIsVisible): static
     {
         $this->isPhoneIsVisible = $isPhoneIsVisible;
+
+        return $this;
+    }
+
+    public function getEmailVerificationToken(): ?string
+    {
+        return $this->emailVerificationToken;
+    }
+
+    public function setEmailVerificationToken(?string $emailVerificationToken): static
+    {
+        $this->emailVerificationToken = $emailVerificationToken;
+
+        return $this;
+    }
+
+    public function getEmailTokenExpiresAt(): ?\DateTimeImmutable
+    {
+        return $this->emailTokenExpiresAt;
+    }
+
+    public function setEmailTokenExpiresAt(?\DateTimeImmutable $emailTokenExpiresAt): static
+    {
+        $this->emailTokenExpiresAt = $emailTokenExpiresAt;
 
         return $this;
     }
