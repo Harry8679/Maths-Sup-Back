@@ -19,7 +19,8 @@ class MailService
 
     public function sendVerificationEmail(User $user): void
     {
-        
+        $email = $user->getEmail();
+        $url = 'https://ton-domaine.com/verify-email?token=' . $token;
     }
 
 }
