@@ -9,21 +9,34 @@ use Mailjet\Resources;
 class MailService
 {
     private MailjetClient $client;
-    private string $frontendUrl;
-    private string $fromEmail = "emarh.harry.code@gmail.com";
-    private string $fromName = "Annuaire Prépas Gabon";
 
-    public function __construct(string $mailjetApiKey, string $mailjetApiSecret, string $frontendUrl)
+    public function __construct(string $apiKey, string $apiSecret)
     {
-        $this->client = new MailjetClient($mailjetApiKey, $mailjetApiSecret, true, ['version' => 'v3.1']);
-        $this->frontendUrl = rtrim($frontendUrl, '/');
+        $this->client = new MailjetClient($apiKey, $apiSecret, true, ['version' => 'v3.1']);
     }
 
     public function sendVerificationEmail(User $user): void
     {
         $email = $user->getEmail();
         $token = $user->getEmailVerificationToken();
-        $url = $this->frontendUrl . '/verify-email?token=' . $token;
-    }
+        $url = 'https://tondomaine.com/verify-email?token=' . $token;
 
+        $body = [
+            'Messages' => [
+                [
+                    'From' => [
+                        'Email' => "ton@email.com",
+                        'Name' => "Annuaire Prépa Gabon"
+                    ],
+                    'To' => [
+                        ['Email' => $email]
+                    ],
+                    'Subject' => "Confirme ton adresse email",
+                    'TextPart' => "Clique sur ce lien pour confirmer ton email : $url"
+                ]
+            ]
+        ];
+
+        $this->client->post(Resources::$Email, ['body' => $body]);
+    }
 }
