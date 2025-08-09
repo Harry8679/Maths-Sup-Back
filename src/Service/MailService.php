@@ -9,6 +9,7 @@ use Mailjet\Resources;
 class MailService
 {
     private MailjetClient $client;
+    private string $frontendUrl;
 
     public function __construct(string $apiKey, string $apiSecret)
     {
@@ -19,7 +20,8 @@ class MailService
     {
         $email = $user->getEmail();
         $token = $user->getEmailVerificationToken();
-        $url = 'https://tondomaine.com/verify-email?token=' . $token;
+        // $url = 'https://tondomaine.com/verify-email?token=' . $token;
+        $url = $this->frontendUrl . '/verify-email?token=' . $token;
 
         $body = [
             'Messages' => [
